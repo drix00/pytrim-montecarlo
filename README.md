@@ -1,2 +1,2 @@
 # pytrim-montecarlo
-TRIM Monte Carlo implemented in Python
+TRansport of Ions in Matter (TRIM) Monte Carlo implemented in Python
