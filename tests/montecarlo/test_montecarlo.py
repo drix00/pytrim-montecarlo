@@ -24,6 +24,7 @@
 # limitations under the License.
 
 # Standard library modules.
+import os.path
 
 # Third party modules.
 
@@ -31,6 +32,7 @@
 
 # Project modules.
 from trim.montecarlo import __author__, __email__, __version__, __copyright__, __project_name__
+from trim.montecarlo import get_current_module_path
 
 # Globals and constants variables.
 
@@ -57,3 +59,15 @@ def test_copyright():
 
 def test_project_name():
     assert __project_name__ != ""
+
+
+def test_get_current_module_path():
+    path = get_current_module_path(__file__)
+    assert os.path.isdir(path)
+
+
+def test_get_current_module_path_invalide_file():
+    path = get_current_module_path(__file__, 'bad_file.bad')
+    assert not os.path.isdir(path)
+    assert not os.path.isfile(path)
+    assert not os.path.exists(path)
