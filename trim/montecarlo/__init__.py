@@ -24,6 +24,8 @@
 # limitations under the License.
 
 # Standard library modules.
+import os.path
+from logging import getLogger
 
 # Third party modules.
 
@@ -37,3 +39,30 @@ __email__ = 'hendrix.demers@mail.mcgill.ca'
 __version__ = '0.1.0'
 __copyright__ = '2019, ' + __author__
 __project_name__ = 'pyTRIM-MonteCarlo'
+
+logger = getLogger(__name__)
+
+
+def get_current_module_path(module_filepath, relative_path=""):
+    """
+    Return the current module path by using :py:obj:`__file__` special module variable.
+
+    An example of usage::
+
+        module_path = get_current_module_path(__file__)
+
+    :param str module_filepath: Pass :py:obj:`__file__` to get the current module path
+    :param str relative_path: Optional parameter to return a path relative to the module path
+    :return: a path, either the module path or a relative path from the module path
+    :rtype: str
+    """
+    base_path = os.path.dirname(module_filepath)
+    logger.debug(base_path)
+
+    file_path = os.path.join(base_path, relative_path)
+    logger.debug(file_path)
+
+    file_path = os.path.normpath(file_path)
+    logger.debug(file_path)
+
+    return file_path
