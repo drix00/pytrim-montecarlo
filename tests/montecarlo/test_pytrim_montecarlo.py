@@ -24,11 +24,28 @@ Tests for module `pytrim_montecarlo`.
 # limitations under the License.
 
 # Standard library modules.
+import os.path
+import logging
 
 # Third party modules.
 
 # Local modules.
 
 # Project modules.
+from trim.montecarlo.pytrim_montecarlo import get_log_file_path, setup_logger
 
 # Globals and constants variables.
+
+
+def test_get_log_file_path():
+    assert os.path.isdir(get_log_file_path())
+
+
+def test_setup_logger():
+    assert logging.getLogger().name == "root"
+    assert logging.getLogger().hasHandlers()
+    assert logging.getLogger().getEffectiveLevel() == logging.WARNING
+    setup_logger()
+    assert logging.getLogger().name == "root"
+    assert logging.getLogger().hasHandlers()
+    assert logging.getLogger().getEffectiveLevel() == logging.DEBUG

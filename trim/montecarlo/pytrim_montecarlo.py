@@ -42,7 +42,7 @@ logger = getLogger(__name__)
 def get_log_file_path():
     path = get_current_module_path(__file__, "../../logs")
     logger.debug("log_file_path: %s", path)
-    if not os.path.isdir(path):
+    if not os.path.isdir(path):  # pragma: no cover
         os.makedirs(path)
 
     return path

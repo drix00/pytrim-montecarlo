@@ -42,7 +42,7 @@ def test_namespace_packages():
 
     :return:
     """
-    if sys.version_info.minor < 7:
+    if sys.version_info.minor < 7:  # pragma: no cover
         import pytest
         with pytest.raises(AttributeError):
             trim.__file__
