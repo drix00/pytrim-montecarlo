@@ -24,6 +24,7 @@ Tests for the `trim.montecarlo.simulation` module.
 # limitations under the License.
 
 # Standard library modules.
+import os.path
 
 # Third party modules.
 import pytest
@@ -57,6 +58,9 @@ def test_init():
 
 def test_read_version_0_1_0():
     file_path = get_current_module_path(__file__, "../../test_data/simple_simulation_v0.1.0.hdf5")
+    if not os.path.isfile(file_path):
+        pytest.skip("File does not exist: {}".format(file_path))
+
     simulation = Simulation(file_path, None)
     simulation.version = ""
 
