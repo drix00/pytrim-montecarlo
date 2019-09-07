@@ -30,12 +30,13 @@ import sys
 
 # Third party modules.
 from setuptools import setup, find_namespace_packages
+# noinspection PyPep8Naming
 from setuptools.command.test import test as TestCommand
 
 # Local modules.
 
 # Project modules.
-from trim.montecarlo import __author__, __email__, __version__, __copyright__, __project_name__
+from trim.montecarlo import __author__, __email__, __version__,  __project_name__
 
 # Globals and constants variables.
 here = os.path.abspath(os.path.dirname(__file__))

@@ -68,7 +68,7 @@ def test_get_current_module_path():
     assert os.path.isdir(path)
 
 
-def test_get_current_module_path_invalide_file():
+def test_get_current_module_path_invalid_file():
     path = get_current_module_path(__file__, 'bad_file.bad')
     assert not os.path.isdir(path)
     assert not os.path.isfile(path)

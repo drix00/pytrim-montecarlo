@@ -45,6 +45,7 @@ def test_namespace_packages():
     if sys.version_info.minor < 7:  # pragma: no cover
         import pytest
         with pytest.raises(AttributeError):
+            # noinspection PyStatementEffect
             trim.__file__
     else:
         assert trim.__file__ is None

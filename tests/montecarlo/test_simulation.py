@@ -2,11 +2,11 @@
 # -*- coding: utf-8 -*-
 
 """
-.. py:currentmodule:: trim.montecarlo.pytrim_montecarlo
+.. py:currentmodule:: tests.montecarlo.test_simulation
 
 .. moduleauthor:: Hendrix Demers <hendrix.demers@mail.mcgill.ca>
 
-Main of the application pyTRIM-MonteCarlo.
+Tests for the `trim.montecarlo.simulation` module.
 """
 
 # Copyright 2019 Hendrix Demers
@@ -24,37 +24,31 @@ Main of the application pyTRIM-MonteCarlo.
 # limitations under the License.
 
 # Standard library modules.
-from logging import getLogger
-import sys
 
 # Third party modules.
+import pytest
 
 # Local modules.
 
 # Project modules.
-from trim.montecarlo import setup_logger
-from trim.montecarlo.arguments import get_arguments
 from trim.montecarlo.simulation import Simulation
 
 # Globals and constants variables.
-logger = getLogger(__name__)
 
 
-class TrimMonteCarloCli:
-    def __init__(self):
-        self.arguments = None
+def test_init():
+    input_file_path = "input.hdf5"
+    output_file_path = "output.hdf5"
 
-    def run(self):
-        self.arguments = get_arguments()
+    simulation = Simulation(input_file_path, None)
+    assert simulation.input_file_path == input_file_path
+    assert simulation.output_file_path == input_file_path
 
-        simulation = Simulation(self.arguments.input, self.arguments.output)
+    simulation = Simulation(input_file_path, output_file_path)
+    assert simulation.input_file_path == input_file_path
+    assert simulation.output_file_path == output_file_path
 
-        simulation.run()
-
-
-if __name__ == '__main__':  # pragma: no cover
-    setup_logger()
-    logger.debug("arguments: {}".format(sys.argv))
-
-    cli = TrimMonteCarloCli()
-    cli.run()
+    with pytest.raises(ValueError) as exception_info:
+        _simulation = Simulation(None, output_file_path)
+    exception_message = exception_info.value.args[0]
+    assert exception_message == "Need an input file path"

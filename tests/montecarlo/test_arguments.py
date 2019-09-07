@@ -24,11 +24,32 @@ Tests for the `trim.montecarlo.arguments` module.
 # limitations under the License.
 
 # Standard library modules.
+import sys
 
 # Third party modules.
 
 # Local modules.
 
 # Project modules.
+from trim.montecarlo.arguments import get_arguments
 
 # Globals and constants variables.
+
+
+def test_get_arguments():
+    # Remove all command arguments, keep only the first argument.
+    sys.argv = [sys.argv[0]]
+
+    # Add arguments for testing the run method.
+    sys.argv.append("-v")
+    sys.argv.append("-i")
+    sys.argv.append("input_file")
+    sys.argv.append("-o")
+    sys.argv.append("output_file")
+
+    arguments = get_arguments()
+
+    assert arguments is not None
+    assert arguments.verbose is True
+    assert arguments.input == "input_file"
+    assert arguments.output == "output_file"

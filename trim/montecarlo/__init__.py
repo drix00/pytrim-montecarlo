@@ -86,6 +86,7 @@ def setup_logger():
     ch = logging.StreamHandler()
     ch.setLevel(logging.WARNING)
 
+    # noinspection SpellCheckingInspection
     log_format = '%(asctime)s : %(name)-40s : %(levelname)-10s : %(message)s'
     formatter = logging.Formatter(log_format)
 
