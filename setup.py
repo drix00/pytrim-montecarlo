@@ -90,7 +90,7 @@ setup(
     zip_safe=False,
     cmdclass={'test': PyTest},
 
-    install_requires=[],
+    install_requires=['h5py'],
     tests_require=['pytest', 'coverage', 'pytest-cov'],
     extras_require={
         'testing': ['pytest', 'coverage', 'pytest-cov'],

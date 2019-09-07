@@ -2,3 +2,4 @@
 omit = venv/*
        docs/*
        setup.py
+       examples/*

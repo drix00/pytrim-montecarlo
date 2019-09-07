@@ -31,9 +31,17 @@ from logging import getLogger
 # Local modules.
 
 # Project modules.
+from trim.montecarlo.file import write, read
+from trim.montecarlo import __version__
 
 # Globals and constants variables.
 logger = getLogger(__name__)
+
+GROUP_SIMULATION = "simulation"
+GROUP_OPTIONS = "options"
+GROUP_RESULTS = "results"
+
+ATTRIBUTE_VERSION = "version"
 
 
 class Simulation:
@@ -51,6 +59,10 @@ class Simulation:
 
         logger.debug("input_file_path: {}".format(self.input_file_path))
         logger.debug("output_file_path: {}".format(self.output_file_path))
+
+        self.version = __version__
+        self.options = None
+        self.results = None
 
     def run(self):
         self.read_options()
@@ -73,3 +85,29 @@ class Simulation:
 
     def write_results(self):
         logger.info("Simulation write results")
+
+    def write(self):
+        hdf5_file = write(self.input_file_path)
+
+        group = hdf5_file.require_group(GROUP_SIMULATION)
+        group.attrs[ATTRIBUTE_VERSION] = self.version
+
+        if self.options is not None:
+            options_group = group.require_group(GROUP_OPTIONS)
+
+        if self.results is not None:
+            results_group = group.require_group(GROUP_RESULTS)
+
+    def read(self):
+        hdf5_file = read(self.input_file_path)
+
+        group = hdf5_file[GROUP_SIMULATION]
+
+        self.version = group.attrs[ATTRIBUTE_VERSION]
+        logger.info("File version: {}".format(self.version))
+
+        if GROUP_OPTIONS in group:
+            logger.info("Read options")
+
+        if GROUP_RESULTS in group:
+            logger.info("Read results")

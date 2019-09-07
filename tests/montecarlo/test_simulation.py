@@ -32,6 +32,7 @@ import pytest
 
 # Project modules.
 from trim.montecarlo.simulation import Simulation
+from trim.montecarlo import get_current_module_path
 
 # Globals and constants variables.
 
@@ -52,3 +53,27 @@ def test_init():
         _simulation = Simulation(None, output_file_path)
     exception_message = exception_info.value.args[0]
     assert exception_message == "Need an input file path"
+
+
+def test_read_version_0_1_0():
+    file_path = get_current_module_path(__file__, "../../test_data/simple_simulation_v0.1.0.hdf5")
+    simulation = Simulation(file_path, None)
+    simulation.version = ""
+
+    simulation.read()
+    assert simulation.version == "0.1.0"
+
+
+def test_write(tmpdir):
+    file_path = tmpdir.join("output.hdf5")
+    simulation = Simulation(file_path, None)
+    version_ref = "1.2.3"
+    simulation.version = version_ref
+    simulation.options = 42
+    simulation.results = 84
+    simulation.write()
+
+    simulation = Simulation(file_path, None)
+    simulation.version = ""
+    simulation.read()
+    assert simulation.version == version_ref
