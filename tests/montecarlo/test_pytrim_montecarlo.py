@@ -24,28 +24,39 @@ Tests for module `pytrim_montecarlo`.
 # limitations under the License.
 
 # Standard library modules.
-import os.path
-import logging
-
+import sys
 # Third party modules.
 
 # Local modules.
 
 # Project modules.
-from trim.montecarlo.pytrim_montecarlo import get_log_file_path, setup_logger
+from trim.montecarlo.pytrim_montecarlo import TrimMonteCarloCli
 
 # Globals and constants variables.
 
 
-def test_get_log_file_path():
-    assert os.path.isdir(get_log_file_path())
+def test_init():
+    cli = TrimMonteCarloCli()
+    assert cli.arguments is None
 
 
-def test_setup_logger():
-    assert logging.getLogger().name == "root"
-    assert logging.getLogger().hasHandlers()
-    assert logging.getLogger().getEffectiveLevel() == logging.WARNING
-    setup_logger()
-    assert logging.getLogger().name == "root"
-    assert logging.getLogger().hasHandlers()
-    assert logging.getLogger().getEffectiveLevel() == logging.DEBUG
+def test_run():
+    cli = TrimMonteCarloCli()
+    assert cli.arguments is None
+
+    # Remove all command arguments, keep only the first argument.
+    sys.argv = [sys.argv[0]]
+
+    # Add arguments for testing the run method.
+    sys.argv.append("-v")
+    sys.argv.append("-i")
+    sys.argv.append("input_file")
+    sys.argv.append("-o")
+    sys.argv.append("output_file")
+
+    cli.run()
+
+    assert cli.arguments is not None
+    assert cli.arguments.verbose is True
+    assert cli.arguments.input == "input_file"
+    assert cli.arguments.output == "output_file"

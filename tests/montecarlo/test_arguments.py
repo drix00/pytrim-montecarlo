@@ -2,11 +2,11 @@
 # -*- coding: utf-8 -*-
 
 """
-.. py:currentmodule:: trim.montecarlo.pytrim_montecarlo
+.. py:currentmodule:: tests.montecarlo.test_arguments
 
 .. moduleauthor:: Hendrix Demers <hendrix.demers@mail.mcgill.ca>
 
-Main of the application pyTRIM-MonteCarlo.
+Tests for the `trim.montecarlo.arguments` module.
 """
 
 # Copyright 2019 Hendrix Demers
@@ -24,35 +24,11 @@ Main of the application pyTRIM-MonteCarlo.
 # limitations under the License.
 
 # Standard library modules.
-from logging import getLogger
-import sys
 
 # Third party modules.
 
 # Local modules.
 
 # Project modules.
-from trim.montecarlo import setup_logger
-from trim.montecarlo.arguments import get_arguments
 
 # Globals and constants variables.
-logger = getLogger(__name__)
-
-
-class TrimMonteCarloCli:
-    def __init__(self):
-        self.arguments = None
-
-    def run(self):
-        self.arguments = get_arguments()
-
-
-if __name__ == '__main__':  # pragma: no cover
-    setup_logger()
-    logger.warning("test warning log")
-    logger.info("test info log")
-    logger.debug("test debug log")
-    logger.debug("arguments: {}".format(sys.argv))
-
-    cli = TrimMonteCarloCli()
-    cli.run()

@@ -26,6 +26,8 @@
 # Standard library modules.
 import os.path
 from logging import getLogger
+import logging.config
+import os
 
 # Third party modules.
 
@@ -66,3 +68,34 @@ def get_current_module_path(module_filepath, relative_path=""):
     logger.debug(file_path)
 
     return file_path
+
+
+def get_log_file_path():
+    path = get_current_module_path(__file__, "../../logs")
+    logger.debug("log_file_path: %s", path)
+    if not os.path.isdir(path):  # pragma: no cover
+        os.makedirs(path)
+
+    return path
+
+
+def setup_logger():
+    root_logger = logging.getLogger()
+    root_logger.setLevel(logging.DEBUG)
+
+    ch = logging.StreamHandler()
+    ch.setLevel(logging.WARNING)
+
+    log_format = '%(asctime)s : %(name)-40s : %(levelname)-10s : %(message)s'
+    formatter = logging.Formatter(log_format)
+
+    ch.setFormatter(formatter)
+
+    root_logger.addHandler(ch)
+
+    path = get_log_file_path()
+    log_file_path = os.path.join(path, "{}.log".format("pytrim_montecarlo"))
+    fh = logging.FileHandler(log_file_path)
+    fh.setFormatter(formatter)
+    fh.setLevel(logging.DEBUG)
+    root_logger.addHandler(fh)

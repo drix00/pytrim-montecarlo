@@ -25,6 +25,7 @@
 
 # Standard library modules.
 import os.path
+import logging
 
 # Third party modules.
 
@@ -33,6 +34,7 @@ import os.path
 # Project modules.
 from trim.montecarlo import __author__, __email__, __version__, __copyright__, __project_name__
 from trim.montecarlo import get_current_module_path
+from trim.montecarlo import get_log_file_path, setup_logger
 
 # Globals and constants variables.
 
@@ -71,3 +73,17 @@ def test_get_current_module_path_invalide_file():
     assert not os.path.isdir(path)
     assert not os.path.isfile(path)
     assert not os.path.exists(path)
+
+
+def test_get_log_file_path():
+    assert os.path.isdir(get_log_file_path())
+
+
+def test_setup_logger():
+    assert logging.getLogger().name == "root"
+    assert logging.getLogger().hasHandlers()
+    assert logging.getLogger().getEffectiveLevel() == logging.WARNING
+    setup_logger()
+    assert logging.getLogger().name == "root"
+    assert logging.getLogger().hasHandlers()
+    assert logging.getLogger().getEffectiveLevel() == logging.DEBUG
