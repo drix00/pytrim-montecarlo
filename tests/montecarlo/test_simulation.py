@@ -58,7 +58,7 @@ def test_init():
 
 def test_read_version_0_1_0():
     file_path = get_current_module_path(__file__, "../../test_data/simple_simulation_v0.1.0.hdf5")
-    if not os.path.isfile(file_path):
+    if not os.path.isfile(file_path):  # pragma: no cover
         pytest.skip("File does not exist: {}".format(file_path))
 
     simulation = Simulation(file_path, None)
@@ -75,6 +75,19 @@ def test_write(tmpdir):
     simulation.version = version_ref
     simulation.options = 42
     simulation.results = 84
+    simulation.write()
+
+    simulation = Simulation(file_path, None)
+    simulation.version = ""
+    simulation.read()
+    assert simulation.version == version_ref
+
+
+def test_write_no_options_no_results(tmpdir):
+    file_path = tmpdir.join("output.hdf5")
+    simulation = Simulation(file_path, None)
+    version_ref = "1.2.3"
+    simulation.version = version_ref
     simulation.write()
 
     simulation = Simulation(file_path, None)

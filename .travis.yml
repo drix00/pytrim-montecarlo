@@ -15,7 +15,7 @@ matrix:
       dist: xenial
   allow_failures:
     - python: 3.8-dev
-      
+
 # command to install dependencies
 before_install:
   - python --version
