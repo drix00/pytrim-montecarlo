@@ -2,11 +2,11 @@
 # -*- coding: utf-8 -*-
 
 """
-.. py:currentmodule:: source
+.. py:currentmodule:: tests.montecarlo.options
 
 .. moduleauthor:: Hendrix Demers <hendrix.demers@mail.mcgill.ca>
 
-Create HDF5 files for ion source options.
+Options for the Monte Carlo simulation program.
 """
 
 # Copyright 2019 Hendrix Demers
@@ -31,26 +31,21 @@ Create HDF5 files for ion source options.
 
 # Project modules.
 from trim.montecarlo.options.source import Source
-from trim.montecarlo.math import Point
-from trim.montecarlo import get_current_module_path
-from trim.montecarlo.file import write
 
 # Globals and constants variables.
+GROUP_OPTIONS = "options"
 
 
-def create_source_file():
-    source = Source()
-    source.position_nm = Point(-1, -2, -3)
-    source.direction = Point(0.2, 0.4, 0.6)
-    source.kinetic_energy_keV = 53.1156
-    source.mass_amu = 68.93
-    source.atomic_number = 31
+class Options:
+    def __init__(self):
+        self.source = Source()
 
-    input_file_path = get_current_module_path(__file__, "test_Source.hdf5")
-    hdf5_file = write(input_file_path)
+    def write(self, parent_group):
+        options_group = parent_group.require_group(GROUP_OPTIONS)
 
-    source.write(hdf5_file)
+        self.source.write(options_group)
 
+    def read(self, parent_group):
+        options_group = parent_group.require_group(GROUP_OPTIONS)
 
-if __name__ == '__main__':  # pragma: no cover
-    create_source_file()
+        self.source.read(options_group)

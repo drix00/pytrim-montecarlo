@@ -32,7 +32,7 @@ import pytest
 # Local modules.
 
 # Project modules.
-from trim.montecarlo.source import Source
+from trim.montecarlo.options.source import Source
 from trim.montecarlo.math import Point
 from trim.montecarlo import get_current_module_path
 from trim.montecarlo.file import read, write
@@ -50,18 +50,14 @@ def test_init():
 
 
 def test_read():
-    file_path = get_current_module_path(__file__, "../../test_data/test_Source.hdf5")
+    file_path = get_current_module_path(__file__, "../../../test_data/test_Source.hdf5")
     if not os.path.isfile(file_path):  # pragma: no cover
         pytest.skip("File does not exist: {}".format(file_path))
 
     hdf5_file = read(file_path)
     source = Source()
     source.read(hdf5_file)
-    assert source.position_nm == Point(-1, -2, -3)
-    assert source.direction == Point(0.2, 0.4, 0.6)
-    assert source.kinetic_energy_keV == 53.1156
-    assert source.mass_amu == 68.93
-    assert source.atomic_number == 31
+    _compare_values(source)
 
 
 def test_write(tmpdir):
@@ -81,6 +77,10 @@ def test_write(tmpdir):
     source = Source()
     hdf5_file = read(file_path)
     source.read(hdf5_file)
+    _compare_values(source)
+
+
+def _compare_values(source):
     assert source.position_nm == Point(-1, -2, -3)
     assert source.direction == Point(0.2, 0.4, 0.6)
     assert source.kinetic_energy_keV == 53.1156
