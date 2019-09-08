@@ -73,14 +73,15 @@ def test_write(tmpdir):
     simulation = Simulation(file_path, None)
     version_ref = "1.2.3"
     simulation.version = version_ref
-    simulation.options = 42
-    simulation.results = 84
+    simulation.options.source.kinetic_energy_keV = 42
+    # simulation.results = 84
     simulation.write()
 
     simulation = Simulation(file_path, None)
     simulation.version = ""
     simulation.read()
     assert simulation.version == version_ref
+    assert simulation.options.source.kinetic_energy_keV == 42
 
 
 def test_write_no_options_no_results(tmpdir):
