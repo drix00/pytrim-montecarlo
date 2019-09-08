@@ -2,11 +2,11 @@
 # -*- coding: utf-8 -*-
 
 """
-.. py:currentmodule:: source
+.. py:currentmodule::
 
 .. moduleauthor:: Hendrix Demers <hendrix.demers@mail.mcgill.ca>
 
-Create HDF5 files for ion source options.
+
 """
 
 # Copyright 2019 Hendrix Demers
@@ -30,8 +30,7 @@ Create HDF5 files for ion source options.
 # Local modules.
 
 # Project modules.
-from trim.montecarlo.options.source import Source
-from trim.montecarlo.math import Point
+from trim.montecarlo.options.material import get_silicon_material
 from trim.montecarlo import get_current_module_path
 from trim.montecarlo.file import write
 
@@ -39,17 +38,12 @@ from trim.montecarlo.file import write
 
 
 def create_source_file():
-    source = Source()
-    source.position_nm = Point(-1, -2, -3)
-    source.direction = Point(0.2, 0.4, 0.6)
-    source.kinetic_energy_keV = 53.1156
-    source.mass_amu = 68.93
-    source.atomic_number = 31
+    material = get_silicon_material()
 
-    input_file_path = get_current_module_path(__file__, "../test_data/test_Source.hdf5")
+    input_file_path = get_current_module_path(__file__, "../test_data/test_Material.hdf5")
     hdf5_file = write(input_file_path)
 
-    source.write(hdf5_file)
+    material.write(hdf5_file)
 
 
 if __name__ == '__main__':  # pragma: no cover
